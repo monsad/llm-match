@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Model Advisor - Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #2196f3;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #1976d2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: white;
+            font-weight: bold;
+        }
+        main {
+            padding: 2rem;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .stat-card h3 {
+            margin-top: 0;
+            color: #2196f3;
+        }
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        .action-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .action-card h3 {
+            margin-top: 0;
+            color: #2196f3;
+        }
+        .btn {
+            padding: 0.75rem 1rem;
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background-color: #1976d2;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>LLM Model Advisor</h1>
+        <div class="user-info">
+            <div class="avatar">A</div>
+            <span>Admin</span>
+        </div>
+    </header>
+    
+    <main>
+        <h2>Dashboard</h2>
+        <p>Welcome back, Admin! Get started with LLM model recommendations.</p>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Available Models</h3>
+                <p>10 LLM models in database</p>
+            </div>
+            <div class="stat-card">
+                <h3>Recommendations</h3>
+                <p>2 recommendation histories</p>
+            </div>
+            <div class="stat-card">
+                <h3>Saved Models</h3>
+                <p>3 models you've saved</p>
+            </div>
+        </div>
+        
+        <h2>Quick Actions</h2>
+        <div class="actions">
+            <div class="action-card">
+                <h3>Get Recommendations</h3>
+                <p>Answer a few questions about your needs to get personalized LLM model recommendations.</p>
+                <a href="recommendation_form.html" class="btn">Start Now</a>
+            </div>
+            <div class="action-card">
+                <h3>Browse Model Database</h3>
+                <p>Explore our comprehensive database of LLM models with detailed specifications and comparisons.</p>
+                <a href="models.html" class="btn">Browse Models</a>
+            </div>
+            <div class="action-card">
+                <h3>View Past Recommendations</h3>
+                <p>Access your recommendation history and previously saved models for quick reference.</p>
+                <a href="history.html" class="btn">View History</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

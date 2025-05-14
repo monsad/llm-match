@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Model Advisor - Models Database</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #2196f3;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #1976d2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: white;
+            font-weight: bold;
+        }
+        main {
+            padding: 2rem;
+        }
+        .filters {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .model-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .model-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        .model-header h3 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        .badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            margin-left: 0.5rem;
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        .model-provider {
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        .model-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+        .model-description {
+            margin-bottom: 1rem;
+        }
+        .model-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .tag {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            background-color: #f0f0f0;
+        }
+        .model-footer {
+            padding: 1rem 1.5rem;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .btn-primary {
+            background-color: #2196f3;
+            color: white;
+        }
+        .btn-outline {
+            background-color: transparent;
+            color: #2196f3;
+            border: 1px solid #2196f3;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .result-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>LLM Model Advisor</h1>
+        <div class="user-info">
+            <div class="avatar">A</div>
+            <span>Admin</span>
+        </div>
+    </header>
+    
+    <main>
+        <h2>LLM Model Database</h2>
+        <p>Explore our comprehensive database of LLM models with detailed specifications.</p>
+        
+        <div class="filters">
+            <h3>Filter Models</h3>
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label for="search">Search</label>
+                    <input type="text" id="search" placeholder="Search by name or provider">
+                </div>
+                <div class="filter-group">
+                    <label for="provider">Provider</label>
+                    <select id="provider">
+                        <option value="">All Providers</option>
+                        <option value="OpenAI">OpenAI</option>
+                        <option value="Anthropic">Anthropic</option>
+                        <option value="Meta">Meta</option>
+                        <option value="Google">Google</option>
+                        <option value="Mistral AI">Mistral AI</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="min-parameters">Min Parameters (B)</label>
+                    <input type="number" id="min-parameters" placeholder="Min">
+                </div>
+                <div class="filter-group">
+                    <label for="license">License Type</label>
+                    <select id="license">
+                        <option value="">All Licenses</option>
+                        <option value="open_source">Open Source</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="research">Research Only</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="result-info">
+            <div>10 models found</div>
+            <button class="btn btn-primary">Get Personalized Recommendations</button>
+        </div>
+        
+        <div class="models-grid">
+            <div class="model-card">
+                <div class="model-header">
+                    <h3>GPT-4 <span class="badge">v4-turbo</span></h3>
+                    <div class="model-provider">OpenAI</div>
+                </div>
+                <div class="model-body">
+                    <div class="model-description">
+                        Advanced large language model with improved reasoning capabilities.
+                    </div>
+                    <div class="model-tags">
+                        <span class="tag">1500B params</span>
+                        <span class="tag">Commercial</span>
+                    </div>
+                </div>
+                <div class="model-footer">
+                    <button class="btn btn-primary">Details</button>
+                    <button class="btn btn-outline">Save</button>
+                </div>
+            </div>
+            
+            <div class="model-card">
+                <div class="model-header">
+                    <h3>Claude <span class="badge">3 Opus</span></h3>
+                    <div class="model-provider">Anthropic</div>
+                </div>
+                <div class="model-body">
+                    <div class="model-description">
+                        A frontier model designed for thoughtful dialogue and content generation.
+                    </div>
+                    <div class="model-tags">
+                        <span class="tag">175B params</span>
+                        <span class="tag">Commercial</span>
+                    </div>
+                </div>
+                <div class="model-footer">
+                    <button class="btn btn-primary">Details</button>
+                    <button class="btn btn-outline">Save</button>
+                </div>
+            </div>
+            
+            <div class="model-card">
+                <div class="model-header">
+                    <h3>Llama <span class="badge">3 405B</span></h3>
+                    <div class="model-provider">Meta</div>
+                </div>
+                <div class="model-body">
+                    <div class="model-description">
+                        Large open-source language model designed for research and commercial use.
+                    </div>
+                    <div class="model-tags">
+                        <span class="tag">405B params</span>
+                        <span class="tag">Open Source</span>
+                    </div>
+                </div>
+                <div class="model-footer">
+                    <button class="btn btn-primary">Details</button>
+                    <button class="btn btn-outline">Save</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
