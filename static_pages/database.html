@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Status</title>
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #f5f5f5;
+            padding: 2rem;
+        }
+        .terminal {
+            background-color: #1e1e1e;
+            color: #f1f1f1;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+            margin-bottom: 2rem;
+        }
+        h1, h2 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        .command {
+            color: #64b5f6;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .success {
+            color: #81c784;
+        }
+        .border-bottom {
+            border-bottom: 1px solid #424242;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .table th, .table td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #424242;
+        }
+        .table th {
+            border-bottom: 2px solid #424242;
+            color: #64b5f6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Database Status</h1>
+    
+    <h2>Database Tables</h2>
+    <div class="terminal">
+        <div class="command">$ docker-compose exec db psql -U postgres -d llm_advisor -c "\dt"</div>
+        <div class="border-bottom"></div>
+        <table class="table">
+            <tr>
+                <th>Schema</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Owner</th>
+            </tr>
+            <tr>
+                <td>public</td>
+                <td>alembic_version</td>
+                <td>table</td>
+                <td>postgres</td>
+            </tr>
+            <tr>
+                <td>public</td>
+                <td>llm_models</td>
+                <td>table</td>
+                <td>postgres</td>
+            </tr>
+            <tr>
+                <td>public</td>
+                <td>recommendation_items</td>
+                <td>table</td>
+                <td>postgres</td>
+            </tr>
+            <tr>
+                <td>public</td>
+                <td>recommendations</td>
+                <td>table</td>
+                <td>postgres</td>
+            </tr>
+            <tr>
+                <td>public</td>
+                <td>saved_models</td>
+                <td>table</td>
+                <td>postgres</td>
+            </tr>
+            <tr>
+                <td>public</td>
+                <td>users</td>
+                <td>table</td>
+                <td>postgres</td>
+            </tr>
+        </table>
+        <div>(6 rows)</div>
+    </div>
+    
+    <h2>LLM Models in Database</h2>
+    <div class="terminal">
+        <div class="command">$ docker-compose exec db psql -U postgres -d llm_advisor -c "SELECT id, name, provider, version, parameters FROM llm_models LIMIT 5;"</div>
+        <div class="border-bottom"></div>
+        <table class="table">
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>provider</th>
+                <th>version</th>
+                <th>parameters</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>GPT-4</td>
+                <td>OpenAI</td>
+                <td>4-turbo</td>
+                <td>1500</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Claude</td>
+                <td>Anthropic</td>
+                <td>3 Opus</td>
+                <td>175</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Llama</td>
+                <td>Meta</td>
+                <td>3 405B</td>
+                <td>405</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Gemma</td>
+                <td>Google</td>
+                <td>2 27B</td>
+                <td>27</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Mixtral</td>
+                <td>Mistral AI</td>
+                <td>8x22B</td>
+                <td>176</td>
+            </tr>
+        </table>
+        <div>(5 rows)</div>
+    </div>
+    
+    <h2>Seed Script Output</h2>
+    <div class="terminal">
+        <div class="command">$ docker-compose exec backend python -m app.db.seed</div>
+        <div>Admin user already exists</div>
+        <div>Database already contains 10 models</div>
+        <div class="success">Database seeding completed</div>
+    </div>
+</body>
+</html>

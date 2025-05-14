@@ -1,0 +1,73 @@
+name: LLM Advisor CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        cd backend
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest-cov
+    
+    - name: Run tests
+      run: |
+        cd backend
+        pytest --cov=app tests/
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+    
+    - name: Build backend Docker image
+      run: |
+        cd backend
+        docker build -t llm-advisor-backend:latest .
+    
+    - name: Build frontend Docker image
+      run: |
+        cd frontend
+        docker build -t llm-advisor-frontend:latest .
+    
+    - name: Test Docker images
+      run: |
+        docker images
+        docker run --rm llm-advisor-backend:latest python -c "import app; print('Backend import successful')"

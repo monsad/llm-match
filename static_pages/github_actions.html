@@ -1,0 +1,36 @@
+<span class="code-line">          POSTGRES_USER: postgres</span>
+<span class="code-line">          POSTGRES_PASSWORD: postgres</span>
+<span class="code-line">          POSTGRES_DB: test_db</span>
+<span class="code-line">        ports:</span>
+<span class="code-line">          - 5432:5432</span>
+<span class="code-line">        options: >-</span>
+<span class="code-line">          --health-cmd pg_isready</span>
+<span class="code-line">          --health-interval 10s</span>
+<span class="code-line">          --health-timeout 5s</span>
+<span class="code-line">          --health-retries 5</span>
+<span class="code-line">    </span>
+<span class="code-line">    steps:</span>
+<span class="code-line">    - uses: actions/checkout@v3</span>
+<span class="code-line">    </span>
+<span class="code-line">    - name: Set up Python</span>
+<span class="code-line">      uses: actions/setup-python@v4</span>
+<span class="code-line">      with:</span>
+<span class="code-line">        python-version: '3.11'</span>
+<span class="code-line">    </span>
+<span class="code-line">    - name: Install dependencies</span>
+<span class="code-line">      run: |</span>
+<span class="code-line">        cd backend</span>
+<span class="code-line">        python -m pip install --upgrade pip</span>
+<span class="code-line">        pip install -r requirements.txt</span>
+<span class="code-line">        pip install pytest-cov</span>
+<span class="code-line">    </span>
+<span class="code-line">    - name: Run tests</span>
+<span class="code-line">      run: |</span>
+<span class="code-line">        cd backend</span>
+<span class="code-line">        pytest --cov=app tests/</span>
+<span class="code-line">      env:</span>
+<span class="code-line">        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db</span>
+</pre>
+    </div>
+</body>
+</html>
